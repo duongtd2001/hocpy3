@@ -19,8 +19,6 @@ print(lst1 == lst2)
 
 # id
 print(id(lst1), id(lst2))
-
-
 # list slicing => trả về 1 danh sách mới, ở vị trí bộ nhớ mới
 number_list = [1, 2, 5, 3, 6, 4, 8]
 new_list = number_list[0:2:1]  # start:stop:step
