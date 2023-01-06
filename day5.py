@@ -24,8 +24,9 @@ number_list = [1, 2, 5, 3, 6, 4, 8]
 new_list = number_list[0:2:1]  # start:stop:step
 # [1:] lấy từ 1 => hết
 # [:2] viết gọn của mặc định
-# [1:-1] lấy từ 1 => cuối (không lấy giá trị cuối)
+# [1:-1] lấy các giá trị ở giữa => đầu và cuối k lấy
 # [:] sao chép danh sách ban đầu
 # [::-1] đảo ngược list (sử dụng list slicing)
 print(new_list is number_list)
 print(new_list)
+# hàm id
