@@ -28,7 +28,7 @@ new_friends = friends[1:]
 print(new_friends)
 
 # e
-friends_copy = friends.copy()
+friends_copy = friends[:]
 print(friends_copy)
 
 # f
