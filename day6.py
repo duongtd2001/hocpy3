@@ -36,5 +36,5 @@ set3.pop()
 
 # copy sâu vào bên trong list ban đầu
 lsr = deepcopy(set1)
-# kiểm tra giá trị có phải kiểu .... không
-print(isinstance(3, int))
+# kiểm tra giá trị có phải kiểu 'int' (hoặc các kiểu khác) không
+print(isinstance('a', str))
