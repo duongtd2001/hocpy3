@@ -9,5 +9,4 @@ if delta < 0:
 elif delta == 0:
     print('pt có nghiệm kép x1 = x2:', -b/2*a)
 else:
-    print('pt có 2 nghiệm phân biệt x1:', (-8+math.sqrt(delta)/2*a))
-    print('pt có 2 nghiệm phân biệt x2:', (-8-math.sqrt(delta)/2*a))
+    print(f'pt có 2 nghiệm phân biệt x1 = {(-8+math.sqrt(delta)/2*a)} và x2 =  {(-8-math.sqrt(delta)/2*a)}')
