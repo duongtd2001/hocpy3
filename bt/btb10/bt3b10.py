@@ -16,10 +16,12 @@ people = {
     "Amy": 15,
     "Ben": 29
 }
-print(people)
 # a
 max_age = max(people.values())
-print(max_age)
+for name, age in people.items():
+    if age == max_age:
+        print(name)
+
 
 # b
 double_age = {
