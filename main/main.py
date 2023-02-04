@@ -12,7 +12,7 @@ line)
 # Ctrl + Shift + P " mở theme"venv\Scripts\activate
 print("❤️")'''
 
-n = int(input("n = "))
+'''n = int(input("n = "))
 
 while n <= 0:
     print("n phải là số nguyên dương")
@@ -25,4 +25,10 @@ while n > 0:
     S += last
     n //= 10
     
-print(S)
+print(S)'''
+lss = [1, 'd']
+fp = open('data.txt', mode='w')  # r: read, w: write, a: append
+fp.write(' - '.join(map(str, lss)))
+# data = fp.read()
+# print(data)
+fp.close()
