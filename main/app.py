@@ -1,145 +1,106 @@
-# Định nghĩa menu hiển thị gợi ý người dùng nhập tùy chọn (option)
-USER_MENU = """Nhập
-a - Thêm một bộ phim mới
-l - Hiển thị danh sách phim
-s - Tìm kiếm các bộ phim theo tên
-x - Xóa phim theo tên
-u - Cập nhật thông tin phim
-q - Thoát
-Lựa chọn của bạn: """
+import json
 
-# Định nghĩa cấu trúc dữ liệu lưu trữ các bộ phim
-# list[dict]: mỗi bộ phim là một dictionary nằm trong danh sách
-movies  = []
+USER_MENU = '''Nhap
+a - them sach
+l - hien thi sach
+x - xoa sach
+s - tim kiem
+q - thoat
+Nhap lua chon: '''
 
-# Kiểm tra các bộ phim duy nhất
-prevs   = set()
+BOOK_FILE = "books.json"
+prevs = set()
 
 
-# Định nghĩa các hàm xử lý
-# Thêm một bộ phim mới
-def add_movie():
-    # Nhập thông tin bộ phim
-    name         = input("Nhập vào tên bộ phim\t: ")
-    
-    while name in prevs:
-        print("Tên phim bị trùng! yêu cầu nhập lại!")
-        name     = input("Nhập vào tên bộ phim\t: ")
+try:
+    with open(BOOK_FILE, 'x') as book_file:
+        json.dump([], book_file)
+except FileExistsError:
+    pass
 
-    director     = input("Nhập vào tên đạo diễn\t: ")
-    release_year = input("Nhập vào năm phát hành\t: ")
 
-    # Tạo bộ phim
-    movie = {
-        'name'        : name,
-        'director'    : director,
-        'release_year': release_year
+def read_book_file():
+    with open(BOOK_FILE) as f:
+        return json.load(f)
+
+
+def write_book_file(data):
+    with open(BOOK_FILE, mode='w') as f:
+        json.dump(data, f, indent=4)
+
+
+def add_book():
+    book_id = input("Nhap ma so cuon sach: ")
+
+    while book_id in prevs:
+        print("Ma so bi trung, hay nhap lai!")
+        book_id = input("Nhap ma so cuon sach: ")
+
+    book_name = input("Nhap ten cuon sach: ")
+    book_author = input("Nhap ten tac gia: ")
+
+    book_dict = {
+        'book_id': book_id,
+        'book_name': book_name,
+        'book_author': book_author
     }
 
-    # Thêm vào danh sách
-    movies.append(movie)
-    prevs.add(name)
+    books = read_book_file()
+    books.append(book_dict)
+    write_book_file(books)
+    print("Them thanh cong")
+    prevs.add(book_id)
 
 
-# Hiển thị thông tin chi tiết
-def show_movie(movie):
-    movie_name          = movie['name']
-    movie_director      = movie['director']
-    movie_release_year  = movie['release_year']
-    
-    print(f"Tên\t\t: {movie_name}")
-    print(f"Đạo diễn\t: {movie_director}")
-    print(f"Năm phát hành\t: {movie_release_year}")
-    
+def show_book(book):
+    print(f"{book['book_name']} - {book['book_author']}")
 
-# Hiển thị các bộ phim
-def show_movies():
-    if movies:
-        for idx, movie in enumerate(movies, start=1):
-            print("THÔNG TIN BỘ PHIM", idx)
-            show_movie(movie)
+
+def show_books(_books):
+    if _books:
+        for book in _books:
+            show_book(book)
     else:
-        print("Danh sách phim trống!")
+        print("Danh sach trong")
 
 
-# Tìm kiếm phim theo tên
-def search_movie():
-    if movies:
-        movie_name = input("Nhập vào tên bộ phim: ")
+def delete_book():
+    id = input("Nhap id cuon sach can xoa: ")
 
-        for idx, movie in enumerate(movies, start=1):
-            if movie['name'] == movie_name:
-                print("THÔNG TIN BỘ PHIM", idx)
-                show_movie(movie)
-                break
-        else:
-            print("Không tìm thấy bộ phim có tên là", movie_name)
+    books = read_book_file()
+    new_books = [book for book in books if book['book_id'] != id]
+
+    if new_books != books:
+        write_book_file(new_books)
+        print("Xoa thanh cong")
     else:
-        print("Danh sách phim trống!")
+        print("Khong tim thay cuon sach voi id:", repr(id))
 
 
-# Xóa phim theo tên
-def remove_movie():
-    if movies:
-        movie_name = input("Nhập vào tên bộ phim: ")
+def search_book():
+    id = input("Nhap id cuon sach can xoa: ")
 
-        for idx, movie in enumerate(movies):
-            if movie['name'] == movie_name:
-                del movies[idx]
-                print("Đã xóa bộ phim thành công!")
-                break
-        else:
-            print("Không tìm thấy bộ phim có tên là", movie_name)
+    books = read_book_file()
+    new_books = [book for book in books if book['book_id'] == id]
+    if new_books:
+        show_books(new_books)
     else:
-        print("Danh sách phim trống!")
+        print("Khong tim thay cuon sach voi id:", repr(id))
 
 
-# Cập nhật thông tin phim
-def update_movie():
-    if movies:
-        movie_name = input("Nhập vào tên bộ phim: ")
-
-        founds = [
-            idx
-            for idx, movie in enumerate(movies)
-            if movie['name'] == movie_name
-        ]
-
-        if founds:
-            position                            = founds[0]
-
-            movies[position]['director']        = input("Nhập vào tên đạo diễn\t: ")
-            movies[position]['release_year']    = input("Nhập vào năm phát hành\t: ")
-
-            print("Cập nhật bộ phim thành công!")
-        else:
-            print("Không có bộ phim có tên là", movie_name)
-    else:
-        print("Danh sách phim trống!")
-
-
-# Nhập sự chọn lựa của người dùng
-user_choice = input(USER_MENU)
-
-# Định nghĩa một dict dùng để lưu các option ứng với hành động
-operations = {
-    'a': add_movie,
-    'l': show_movies,
-    's': search_movie,
-    'x': remove_movie,
-    'u': update_movie
-}
-
-# Chọn nhiều option cho đến khi bấm thoát
-while user_choice != 'q':
-    # Kiểm tra tùy chọn có nằm trong operations dict hay không ?
-    # Nếu có thì gọi hàm không thì in ra "Lựa chọn không hợp lệ, yêu cầu nhập lại!"
-    if user_choice in operations:
-        # Lấy ra giá trị của key: user_choice
-        operation = operations[user_choice]
-        operation()  # gọi hàm tương ứng với tùy chọn
-    else:
-        print("Lựa chọn không hợp lệ, yêu cầu nhập lại!")
-
-    # Nhập sự chọn lựa của người dùng
+while True:
     user_choice = input(USER_MENU)
+
+    if user_choice == 'a':
+        add_book()
+    elif user_choice == 'l':
+        books = read_book_file()
+        show_books(books)
+    elif user_choice == 'x':
+        delete_book()
+    elif user_choice == 's':
+        search_book()
+    elif user_choice == 'q':
+        break
+    else:
+        print("Lua chon khong hop le, vui long thu lai!")

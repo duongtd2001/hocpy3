@@ -26,9 +26,27 @@ while n > 0:
     n //= 10
     
 print(S)'''
-lss = [1, 'd']
+'''lss = [1, 'd']
 fp = open('data.txt', mode='w')  # r: read, w: write, a: append
 fp.write(' - '.join(map(str, lss)))
 # data = fp.read()
 # print(data)
-fp.close()
+fp.close()'''
+import tkinter as tk
+
+def on_yes_clicked():
+    window.destroy()
+
+def on_no_clicked():
+    pass
+
+window = tk.Tk()
+window.title("Cửa sổ với 2 nút")
+
+yes_button = tk.Button(text="Đồng ý", command=on_yes_clicked)
+no_button = tk.Button(text="Không", command=on_no_clicked)
+
+yes_button.pack()
+no_button.pack()
+
+window.mainloop()
